@@ -1,5 +1,7 @@
+import { useState } from "react";
 import styled from "styled-components"
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons';
+import { sliderItems } from "../Data";
 
 const Container = styled.div`
     width: 100%;
@@ -31,7 +33,8 @@ const Arrow = styled.div`
 const Wrapper = styled.div`
     height: 100%;
     display: flex;  
-    transform:translateX(0vw)
+    transform: translateX(${(props) => props.slideIndex * -100}vw);
+    transition: all 1.5s ease; 
 `;
 
 const Slide = styled.div`
@@ -45,6 +48,7 @@ const Slide = styled.div`
 const ImgContainer = styled.div`
     height: 100%;
     flex: 1;
+    margin-left: 70px;
 `;
 
 const Image = styled.img`
@@ -54,6 +58,7 @@ const Image = styled.img`
 const InfoContainer = styled.div`
     flex: 1;
     padding: 50px;
+    margin-right: 50px;
 `;
 
 const Title = styled.h1`    
@@ -73,48 +78,34 @@ const Button = styled.button`
     background-color: transparent;
     cursor: pointer;
 `;
-
 const Slider = () => {
     const [slideIndex, setSlideIndex] = useState(0);
     const handleClick = (direction) => {
-
-    }
+      if (direction === "left") {
+        setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
+      } else {
+        setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
+      }
+    };
+    
   return (
     <Container>
         <Arrow direction="left" onClick={()=>handleClick("left")}>
             <ArrowLeftOutlined />
         </Arrow>
-        <Wrapper>
-            <Slide bg="f5fafd">
+        <Wrapper slideIndex={slideIndex}>
+            {sliderItems.map((item)=> (
+            <Slide bg={item.bg}>
             <ImgContainer>
-                <Image src="../assets/bajumuslim.png" />
+                <Image src={item.img} />
             </ImgContainer>
             <InfoContainer>
-                <Title>SUMMER SALE</Title>
-                <Desc>DONT'T SOMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS</Desc>
+                <Title>{item.title}</Title>
+                <Desc>{item.desc}</Desc>
                 <Button>SHOW NOW</Button>
             </InfoContainer>
             </Slide>
-            <Slide bg="fcf1ed">
-            <ImgContainer>
-                <Image src="../assets/bajumuslim.png" />
-            </ImgContainer>
-            <InfoContainer>
-                <Title>WINTER SALe</Title>
-                <Desc>DONT'T SOMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS</Desc>
-                <Button>SHOW NOW</Button>
-            </InfoContainer>
-            </Slide>
-            <Slide bg="fbf0f4">
-            <ImgContainer>
-                <Image src="../assets/bajumuslim.png" />
-            </ImgContainer>
-            <InfoContainer>
-                <Title>POPULAR SALE</Title>
-                <Desc>DONT'T SOMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS</Desc>
-                <Button>SHOW NOW</Button>
-            </InfoContainer>
-            </Slide>
+            ))}
         </Wrapper>
         <Arrow direction="right" onClick={()=>handleClick("right")}>
             <ArrowRightOutlined />
