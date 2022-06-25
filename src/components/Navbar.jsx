@@ -46,6 +46,7 @@ const Input = styled.input`
 const Center = styled.div` 
     flex: 1;
     text-align: center;
+    ${mobile({ marginLeft: "10px" })}
 `;
 
 const Logo = styled.h1`
